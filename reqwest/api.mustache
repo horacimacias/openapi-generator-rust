@@ -1,9 +1,26 @@
 {{>partial_header}}
 
+use std::fmt::Display;
+
+use num_traits;
 use reqwest;
 
 use crate::apis::ResponseContent;
 use super::{Error, configuration};
+
+
+trait NumVecJoin {
+    fn join(&self, sep: &str) -> String;
+}
+
+impl <T: Display + num_traits::Num> NumVecJoin for Vec<T> {
+    fn join(&self, sep: &str) -> String {
+        self.iter()
+            .map(ToString::to_string)
+            .collect::<Vec<String>>()
+            .join(sep)
+    }
+}
 
 {{#operations}}
 {{#operation}}
